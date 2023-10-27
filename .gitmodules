@@ -1,0 +1,3 @@
+[submodule "spike"]
+	path = spike
+	url = git@github.com:ARintaro/riscv-isa-sim.git
