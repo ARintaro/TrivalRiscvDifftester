@@ -1,11 +1,15 @@
 add_rules("mode.debug", "mode.release")
 
+set_project("TrivalRiscvDifftester")
+set_version("0.1.0")
 set_languages("c++17")
 
-target("TrivalRiscvDifftester")
-    set_kind("binary")
-    add_files("src/*.cpp")
-    add_includedirs("/usr/include")
+add_includedirs("interface")
+
+includes("spike_core", "difftest")
+
+link_kind = "shared"
+
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

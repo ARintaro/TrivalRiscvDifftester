@@ -32,5 +32,3 @@ SpacesInContainerLiterals: false
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 Standard: Cpp17
-TabWidth: 4
-UseTab: Never
