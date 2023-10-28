@@ -5,10 +5,20 @@ set_version("0.1.0")
 set_languages("c++17")
 
 add_includedirs("interface")
+add_includedirs("utils")
 
-includes("spike_core", "difftest")
+add_requires("elfio")
+
+-- if is_mode("debug") then 
+--	set_policy("build.sanitizer.address", true)
+-- end 
 
 link_kind = "shared"
+
+includes("spike_core", "difftest", "utils")
+
+
+
 
 
 --

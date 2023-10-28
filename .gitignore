@@ -9,4 +9,5 @@ build/
 # MacOS Cache
 .DS_Store
 
-
+*.elf
+*.txt

@@ -38,12 +38,21 @@ target("spike")
 		add_links(spike_build_dir .. "libdisasm.a", {public = true})
 		add_links(spike_build_dir .. "libsoftfloat.a", {public = true})
 		add_links(spike_build_dir .. "libfesvr.a", {public = true})
-		add_links(spike_build_dir .. "libfdt.a",{public = true})
+		add_links(spike_build_dir .. "libfdt.a", {public = true})
 	end 
 
 
 target("spike_core")
 	add_deps("spike")
-	set_kind("binary")
+	set_kind("static")
 	add_files("*.cpp")
+	remove_files("spike_main.cpp")
+	
+target("spike_main")
+	add_deps("spike_core")
+	add_deps("elf_reader")
+	set_kind("shared")
+	add_files("spike_main.cpp")	
+	add_cxxflags("-fvisibility=hidden", "-ffunction-sections", "-fdata-sections")
+	add_ldflags("-Wl,--gc-sections")
 	
