@@ -12,7 +12,7 @@ namespace difftest {
 
 struct RiscvCoreState {
 	std::array<reg, INT_REGS_NUM> int_regs;
-	reg pc;
+	address pc;
 	reg cur_prv;
 
 	reg mstatus;
@@ -20,9 +20,12 @@ struct RiscvCoreState {
 	reg mtval;
 	reg mepc;	
 
+	address last_pc;
+	reg last_inst;
+
 	inline void print() const {
 		puts("===========");
-		printf("pc: 0x%08x\n", pc);
+		printf("next_pc: 0x%08x\n");
 		for (int i = 0; i < INT_REGS_NUM; ++i) {
 			printf("%s: 0x%08x | ", REGS_NAME[i], int_regs[i]);
 			if ((i + 1) % 8 == 0) puts("");
@@ -31,6 +34,7 @@ struct RiscvCoreState {
 };
 
 struct TestProgramConfig {
+	bool debug;
 	address start_pc;
 	address ram_base;
 	msize memory_size;

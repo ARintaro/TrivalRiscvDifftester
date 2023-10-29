@@ -42,17 +42,25 @@ target("spike")
 	end 
 
 
-target("spike_core")
-	add_deps("spike")
-	set_kind("static")
-	add_files("*.cpp")
-	remove_files("spike_main.cpp")
+-- target("spike_core")
+-- 	add_deps("spike")
+-- 	set_kind("static")
+-- 	add_files("*.cpp")
+-- 	remove_files("spike_main.cpp")
+-- 	add_cxxflags("-fPIC")
 	
+-- target("spike_main")
+-- 	add_deps("spike_core")
+-- 	add_deps("elf_reader")
+-- 	set_kind("shared")
+-- 	add_files("spike_main.cpp")	
+-- 	add_cxxflags("-fvisibility=hidden")
+
+
 target("spike_main")
-	add_deps("spike_core")
 	add_deps("elf_reader")
+	add_deps("spike")
+	add_files("*.cpp")
 	set_kind("shared")
-	add_files("spike_main.cpp")	
-	add_cxxflags("-fvisibility=hidden", "-ffunction-sections", "-fdata-sections")
-	add_ldflags("-Wl,--gc-sections")
+	add_cxxflags("-fvisibility=hidden")
 	

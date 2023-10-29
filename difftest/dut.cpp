@@ -4,7 +4,16 @@
 #include <memory>
 
 
-Dut::Dut(const std::string& path, const TestProgramConfig& config, const Elf& elf) {
+Dut::Dut(const std::string& path, const TestProgramConfig& config, const Elf& elf) : lib(path) {
+	core = std::unique_ptr<TestCoreInterface>(lib.init_func(&config, &elf));
+	devices = core->get_device_handlers();
+}
+
+DutLib::~DutLib() {
+	dlclose(lib_handle);
+}
+
+DutLib::DutLib(const std::string& path) {
 	lib_handle = dlopen(path.c_str(), RTLD_NOW);
 
 	if (lib_handle == nullptr) {
@@ -13,17 +22,11 @@ Dut::Dut(const std::string& path, const TestProgramConfig& config, const Elf& el
 
 	dlerror();
 
-	auto init_func = reinterpret_cast<DifftestDutInitFunc>(dlsym(lib_handle, "difftest_dut_init"));
+	init_func = reinterpret_cast<DifftestDutInitFunc>(dlsym(lib_handle, "difftest_dut_init"));
 
 	const char* dlsym_error = dlerror();
 	if (dlsym_error != nullptr) {
 		dlclose(lib_handle);
 		throw std::runtime_error("Cannot load symbol 'difftest_dut_init ': " + std::string(dlsym_error));
 	}
-
-	core = std::unique_ptr<TestCoreInterface>(init_func(&config, &elf));
-}
-
-Dut::~Dut() {
-	dlclose(lib_handle);
 }

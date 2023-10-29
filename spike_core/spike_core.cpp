@@ -1,4 +1,5 @@
 #include "spike_core.h"
+#include "abstract_device.h"
 #include "cfg.h"
 #include "devices.h"
 #include "mmu.h"
@@ -58,6 +59,7 @@ SpikeCore::SpikeCore(const TestProgramConfig& config) {
 		nullptr);
 	
 	proc = sim->get_core(0);
+	proc->debug = config.debug;
 	state = proc->get_state();
 
 	state->pc = config.start_pc;	
@@ -93,8 +95,10 @@ void SpikeCore::send_interupt(reg cause) {
 
 void SpikeCore::init_device_handlers(const TestProgramConfig& config) {
 	if (config.uart_config.has_value()) {
-		auto uart = std::make_unique<SpikeUart>(config.uart_config.value());
-		device_handlers.uart = std::move(uart);
+		const auto& uart_config = config.uart_config.value();
+		auto uart_device = std::make_shared<SpikeUart>(uart_config);
+		device_handlers.uart = uart_device;
+		sim->add_device(uart_config.start, uart_device);
 	}
 }
 
@@ -114,9 +118,9 @@ void SpikeCore::sync_extern_state() {
 	extern_state.mcause = state->mcause->read();
 	extern_state.mtval = state->mtval->read();
 	extern_state.mepc = state->mepc->read();
+
+	extern_state.last_pc = proc->diff_last_pc;
+	extern_state.last_inst = proc->diff_last_insn.bits();
+
 }
-
-
-
-
 

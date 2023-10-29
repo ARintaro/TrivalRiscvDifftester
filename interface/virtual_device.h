@@ -8,18 +8,18 @@ namespace difftest {
 
 struct VirtualDeviceConfig {
 	address start;
-	address end;
+	address size;
 
-	[[nodiscard]] inline bool check_in(address addr) const {
-		return addr >= start && addr <= end;
-	}
 };
 
 class VirtualUart {
+public:
 	// read a byte
-	virtual std::optional<u8> read_byte();
+	virtual std::optional<u8> host_read_byte() = 0;
 	// write a byte, throw exception if failed
-	virtual void write_byte(u8 byte);
+	virtual void host_write_byte(u8 byte) = 0;
+
+	virtual ~VirtualUart() = default;
 };
 
 struct VirtualDeviceHandlers {
