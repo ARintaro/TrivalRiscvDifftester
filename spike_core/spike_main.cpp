@@ -8,13 +8,10 @@
 
 using namespace difftest;
 
-extern "C" EXPORT TestCoreInterface* difftest_dut_init(const TestProgramConfig* config, const Elf* elf) {
+extern "C" EXPORT TestCoreInterface* difftest_dut_init(const TestProgramConfig* config) {
 	puts("[Spike Main] Init Start");
 
 	auto* core = new SpikeCore(*config);
-	elf->visit_alloc_sections([&](difftest::address addr, difftest::msize size, const difftest::u8* data) {
-		core->write_memory(addr, size, data);
-	});
 
 	puts("[Spike Main] Success");
 

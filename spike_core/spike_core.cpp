@@ -70,9 +70,10 @@ SpikeCore::SpikeCore(const TestProgramConfig& config) {
 	init_device_handlers(config);
 }
 
-void SpikeCore::step(u64 n) {
+u32 SpikeCore::step(u64 n) {
 	proc->step(n);
 	sync_extern_state();
+	return 1;
 }
 
 const RiscvCoreState& SpikeCore::get_state() const {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bin.h"
 #include "difftest.h"
 #include "dut_lib.h"
 #include "virtual_device.h"
@@ -28,6 +29,9 @@ public:
 	std::unique_ptr<TestCoreInterface> core;
 	VirtualDeviceHandlers devices;
 
-	Dut(const std::string &path, const TestProgramConfig &config,
-		const Elf &elf);
+	Dut(const std::string &path, const TestProgramConfig &config);
+
+	void write_memory(const Elf& elf);
+
+	void write_memory(address addr, const BinFile& bin);
 };

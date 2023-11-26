@@ -22,7 +22,7 @@ void Elf::visit_alloc_sections(const std::function<void(address, msize, const u8
 }
 
 
-Elf::Elf(const char* path) {
+Elf::Elf(const std::string &path) {
     if (!reader.load(path)) {
         std::cerr << "elf load failed\n";
         std::exit(1);

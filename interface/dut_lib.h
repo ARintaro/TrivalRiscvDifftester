@@ -18,7 +18,7 @@ class TestProgramConfig;
 extern "C" {
 #endif
 
-TestCoreInterface* difftest_dut_init(const TestProgramConfig* config, const Elf* elf);
+TestCoreInterface* difftest_dut_init(const TestProgramConfig* config);
 
 #ifdef __cplusplus
 }
@@ -27,7 +27,7 @@ TestCoreInterface* difftest_dut_init(const TestProgramConfig* config, const Elf*
 
 #else
 
-using DifftestDutInitFunc = TestCoreInterface* (*)(const TestProgramConfig* config, const Elf* elf);
+using DifftestDutInitFunc = TestCoreInterface* (*)(const TestProgramConfig* config);
 
 #endif
 

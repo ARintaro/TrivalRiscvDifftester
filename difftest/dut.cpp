@@ -1,13 +1,25 @@
 #include "dut.h"
 #include "test_core.h"
+#include "type_def.h"
 #include <dlfcn.h>
 #include <memory>
 
 
-Dut::Dut(const std::string& path, const TestProgramConfig& config, const Elf& elf) : lib(path) {
-	core = std::unique_ptr<TestCoreInterface>(lib.init_func(&config, &elf));
+Dut::Dut(const std::string& path, const TestProgramConfig& config) : lib(path) {
+	core = std::unique_ptr<TestCoreInterface>(lib.init_func(&config));
 	devices = core->get_device_handlers();
 }
+
+void Dut::write_memory(const Elf& elf) {
+	elf.visit_alloc_sections([&](address addr, msize size, const u8* data) {
+		core->write_memory(addr, size, data);
+	});
+}
+
+void Dut::write_memory(address addr, const BinFile& bin) {
+	core->write_memory(addr, bin.buffer.size(), bin.buffer.data());
+}
+
 
 DutLib::~DutLib() {
 	dlclose(lib_handle);

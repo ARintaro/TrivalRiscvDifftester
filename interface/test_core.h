@@ -46,7 +46,7 @@ struct TestProgramConfig {
 
 class TestCoreInterface {
 public:
-  virtual void step(u64 n) = 0;
+  virtual u32 step(u64 n) = 0;
 
   [[nodiscard]] virtual const RiscvCoreState &get_state() const = 0;
 
