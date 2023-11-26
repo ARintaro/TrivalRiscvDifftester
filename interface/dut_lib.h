@@ -2,7 +2,6 @@
 
 // difftest dynamic link library interface
 
-#include <elf_reader.h>
 #include <memory>
 
 namespace difftest {
