@@ -6,7 +6,6 @@
 
 using namespace difftest;
 
-#include "test_core.h"
 #include <cstdlib>
 #include <iostream>
 #include <memory>

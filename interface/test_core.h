@@ -24,12 +24,13 @@ struct RiscvCoreState {
 	reg last_inst;
 
 	inline void print() const {
-		puts("===========");
-		printf("next_pc: 0x%08x\n");
+		
+		fprintf(stderr, "last_pc: 0x%08x\n", last_pc);
 		for (int i = 0; i < INT_REGS_NUM; ++i) {
-			printf("%s: 0x%08x | ", REGS_NAME[i], int_regs[i]);
-			if ((i + 1) % 8 == 0) puts("");
+			fprintf(stderr, "%s: 0x%08x | ", REGS_NAME[i], int_regs[i]);
+			if ((i + 1) % 8 == 0) fprintf(stderr, "\n");
 		}
+		fprintf(stderr, "\n");
 	}
 };
 

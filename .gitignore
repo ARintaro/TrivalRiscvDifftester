@@ -11,3 +11,6 @@ build/
 
 *.elf
 *.txt
+*.bin
+*.s
+*.out

@@ -3,11 +3,13 @@
 #include "type_def.h"
 #include <dlfcn.h>
 #include <memory>
+#include <iostream>
 
 
 Dut::Dut(const std::string& path, const TestProgramConfig& config) : lib(path) {
 	core = std::unique_ptr<TestCoreInterface>(lib.init_func(&config));
-	devices = core->get_device_handlers();
+	std::cout<<"dut reached"<<std::endl;
+	// devices = core->get_device_handlers();
 }
 
 void Dut::write_memory(const Elf& elf) {
