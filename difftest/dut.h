@@ -4,6 +4,7 @@
 #include "difftest.h"
 #include "dut_lib.h"
 #include "virtual_device.h"
+#include "elf_reader.h"
 
 
 class DutLib {

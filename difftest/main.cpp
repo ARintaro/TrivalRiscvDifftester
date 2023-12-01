@@ -26,10 +26,15 @@ int main(int argc, char **argv) {
       .memory_size = 1024 * 1024 * 8,
       .uart_config = VirtualDeviceConfig{.start = 0x10000000, .size = 8}};
 
-  if (argc != 4) {
-    std::cerr << "Usage: " << argv[0] << " <spike_file> <tested_file> <elf_file>" << std::endl;
+  if (argc != 5) {
+    std::cerr << "Usage: " << argv[0]
+              << " <spike_file> <tested_file> <elf_file> <Print>" << std::endl;
     return 1;
   }
+
+  auto print = std::string(argv[4]) == "true";
+
+  std::cout << "Print: " << print << std::endl;
 
   auto ext = get_path_extension(argv[3]);
   Dut golden(argv[1], config);
@@ -55,40 +60,44 @@ int main(int argc, char **argv) {
 
   bool failed = false;
   for (int i = 0; i < 10000; i++) {
+
     unsigned stepped_num = tested.core->step(1);
 
     if (failed) {
       return 1;
     }
 
-    // std::cerr<<"step_num:" << stepped_num<<std::endl;
-    for(int j = 0;j < stepped_num;j++) {
+    if (print) {
+      std::cerr<< "step_num : " << stepped_num<<std::endl;
+    }
+    for (int j = 0; j < stepped_num; j++) {
       golden.core->step(1);
-      std::cerr << disasm->disassemble(golden.core->get_state().last_inst) << std::endl;
+      if (print) {
+        std::cerr << disasm->disassemble(golden.core->get_state().last_inst) << std::endl;
+      }
     }
     instr_step += stepped_num;
-    //auto opt = golden.devices.uart->host_read_byte();
+    // auto opt = golden.devices.uart->host_read_byte();
 
     // if (opt.has_value()) {
     //   std::cout << static_cast<char>(opt.value());
     // }
-    // 
-    
-    const auto& state = golden.core->get_state();
-    const auto& state_tested = tested.core->get_state();
+    //
 
-    if(state.int_regs != state_tested.int_regs || state.last_pc != state_tested.last_pc) {
-      std::cerr<<"not matched at"<<instr_step<<std::endl;
+    const auto &state = golden.core->get_state();
+    const auto &state_tested = tested.core->get_state();
+
+    if (state.int_regs != state_tested.int_regs ||
+        state.last_pc != state_tested.last_pc) {
+      std::cerr << "not matched at" << instr_step << std::endl;
       state.print();
       state_tested.print();
       failed = true;
     } else {
       // state_tested.print();
     }
-    
-    
   }
-  std::cout<<"赢"<<std::endl;
-  std::cout<<"total steps"<<instr_step <<std::endl;
+  std::cout << "Difftest Over " << std::endl;
+  std::cout << "total steps: " << instr_step << std::endl;
   return 0;
 }

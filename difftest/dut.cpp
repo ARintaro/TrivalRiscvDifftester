@@ -8,7 +8,6 @@
 
 Dut::Dut(const std::string& path, const TestProgramConfig& config) : lib(path) {
 	core = std::unique_ptr<TestCoreInterface>(lib.init_func(&config));
-	std::cout<<"dut reached"<<std::endl;
 	// devices = core->get_device_handlers();
 }
 
