@@ -28,23 +28,23 @@ int main(int argc, char **argv) {
 
   if (argc != 5) {
     std::cerr << "Usage: " << argv[0]
-              << " <spike_file> <tested_file> <elf_file> <Print>" << std::endl;
+              << " <spike_file> <tested_file> <Print> <data_file>" << std::endl;
     return 1;
   }
 
-  auto print = std::string(argv[4]) == "true";
+  auto print = std::string(argv[3]) == "true";
 
   std::cout << "Print: " << print << std::endl;
 
-  auto ext = get_path_extension(argv[3]);
+  auto ext = get_path_extension(argv[4]);
   Dut golden(argv[1], config);
   Dut tested(argv[2], config);
   if (ext == "elf") {
-    Elf elf(argv[3]);
+    Elf elf(argv[4]);
     golden.write_memory(elf);
     tested.write_memory(elf);
   } else if (ext == "bin") {
-    BinFile bin(argv[3]);
+    BinFile bin(argv[4]);
     golden.write_memory(config.ram_base, bin);
     tested.write_memory(config.ram_base, bin);
   } else {
@@ -58,8 +58,12 @@ int main(int argc, char **argv) {
 
   unsigned instr_step = 0;
 
+  const unsigned max_step = 100000;
+
+  const u32 ebreak = 0x100073;
+
   bool failed = false;
-  for (int i = 0; i < 10000; i++) {
+  for (int i = 0; i < max_step; i++) {
 
     unsigned stepped_num = tested.core->step(1);
 
@@ -72,17 +76,19 @@ int main(int argc, char **argv) {
     }
     for (int j = 0; j < stepped_num; j++) {
       golden.core->step(1);
+
+      auto last_inst = golden.core->get_state().last_inst;
+
       if (print) {
-        std::cerr << disasm->disassemble(golden.core->get_state().last_inst) << std::endl;
+        std::cerr << disasm->disassemble(last_inst) << std::endl;
       }
+
+      if (last_inst == ebreak) {
+        return 0;
+      }
+
     }
     instr_step += stepped_num;
-    // auto opt = golden.devices.uart->host_read_byte();
-
-    // if (opt.has_value()) {
-    //   std::cout << static_cast<char>(opt.value());
-    // }
-    //
 
     const auto &state = golden.core->get_state();
     const auto &state_tested = tested.core->get_state();
@@ -94,7 +100,19 @@ int main(int argc, char **argv) {
       state_tested.print();
       failed = true;
     } else {
-      // state_tested.print();
+      if (print) {
+        state_tested.print();
+
+        auto start = 0x80001000;
+
+        for (int i = 0; i < 10; i++) {
+          auto addr = start + i * 4;
+          auto val = tested.core->read_memory_word(addr);
+          std::cerr << "addr: " << std::hex << addr << " val: " << val
+                    << std::endl;
+        }
+
+      }
     }
   }
   std::cout << "Difftest Over " << std::endl;
