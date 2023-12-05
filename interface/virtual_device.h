@@ -17,7 +17,7 @@ public:
 	// read a byte
 	virtual std::optional<u8> host_read_byte() = 0;
 	// write a byte, throw exception if failed
-	virtual void host_write_byte(u8 byte) = 0;
+	virtual bool host_write_byte(u8 byte) = 0;
 
 	virtual ~VirtualUart() = default;
 };

@@ -13,7 +13,7 @@ public:
 
 	// VirtualUart
 	std::optional<u8> host_read_byte() override;
-	void host_write_byte(u8 byte) override;
+	bool host_write_byte(u8 byte) override;
 
 	// abstract_device_t 
 	bool load(reg_t offset, size_t len, uint8_t* bytes) override;

@@ -13,7 +13,9 @@ class SpikeCore : public TestCoreInterface {
 public:
 	explicit SpikeCore(const TestProgramConfig& config);
 
-	u32 step(u64 n) override;
+	TestCoreStepResult step() override;
+
+	void set_state(const RiscvCoreState &state) override;
 
 	[[nodiscard]] const RiscvCoreState& get_state() const override;
 

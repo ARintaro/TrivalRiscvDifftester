@@ -38,8 +38,9 @@ std::optional<u8> SpikeUart::host_read_byte() {
 	return ret;
 }
 
-void SpikeUart::host_write_byte(u8 byte) {	
+bool SpikeUart::host_write_byte(u8 byte) {	
 	recv_buffer.push(byte);
+	return true;
 }
 
 SpikeUart::SpikeUart(const VirtualDeviceConfig& config) {

@@ -70,11 +70,14 @@ SpikeCore::SpikeCore(const TestProgramConfig& config) {
 	init_device_handlers(config);
 }
 
-u32 SpikeCore::step(u64 n) {
-	proc->step(n);
+TestCoreStepResult SpikeCore::step() {
+	proc->step(1);
 	sync_extern_state();
-	return 1;
+	return TestCoreStepResult{1, false};
 }
+
+
+
 
 const RiscvCoreState& SpikeCore::get_state() const {
 	return extern_state;
@@ -125,3 +128,16 @@ void SpikeCore::sync_extern_state() {
 
 }
 
+void SpikeCore::set_state(const RiscvCoreState &other) {
+	for (int i = 0; i < INT_REGS_NUM; i++) {
+		state->XPR.write(i, other.int_regs[i]);
+	}
+
+	state->pc = other.pc;
+	state->prv = other.cur_prv;
+	state->mepc->write(other.mepc);
+	// state->mtvec->write(other.mtvec);
+	state->mcause->write(other.mcause);
+	state->mtval->write(other.mtval);
+	state->mstatus->write(other.mstatus);
+}
