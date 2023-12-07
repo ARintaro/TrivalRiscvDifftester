@@ -64,6 +64,7 @@ int main(int argc, char **argv) {
   auto ext = get_path_extension(argv[4]);
   Dut golden(argv[1], config);
   Dut tested(argv[2], config);
+
   if (ext == "elf") {
     Elf elf(argv[4]);
     golden.write_memory(elf);
@@ -91,13 +92,16 @@ int main(int argc, char **argv) {
   addr.sin_family = AF_INET;
   addr.sin_port = htons(bind_port);
   addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+  sockaddr_in client_addr;
+  socklen_t client_addr_len = sizeof(client_addr);
+  int clientfd = 0;
 
   if (uart_server) {
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     int opt = 1;
     // setsockopt(listenfd, SOL_SOCKET , SO_REUSEADDR, &opt, sizeof(opt));
     if (listenfd == -1) {
-      std::cerr << "socket error" << std::endl;
+      std::cout << "socket error" << std::endl;
       return 1;
     }
     if (bind(listenfd, (sockaddr *)&addr, sizeof(addr)) == -1) {
@@ -109,26 +113,23 @@ int main(int argc, char **argv) {
       std::cout << "listen error" << std::endl;
       return 1;
     }
-  }
 
-  sockaddr_in client_addr;
-  socklen_t client_addr_len = sizeof(client_addr);
-  int clientfd = 0;
-
-
-  if (uart_server) {
-    std::clog << "waiting connect, watching " << bind_port << std::endl;
+    std::cout << "running on server mode, waiting connect, watching " << bind_port << std::endl;
 
     clientfd = accept(listenfd, (sockaddr *)&client_addr, &client_addr_len);
 
     if (received_term) {
-      std::clog << "client not connected" << std::endl;
+      std::cout << "client not connected" << std::endl;
       goto EXIT;
     }
 
-    std::clog << "client connected" << std::endl;
+    std::cout << "client connected" << std::endl;
+  } else {
+
+    std::cout << "running on no server mode, max step: " << max_step  << std::endl;
   }
 
+  
   std::signal(SIGINT, signal_handler);
   std::signal(SIGTERM, signal_handler);
 
@@ -222,8 +223,10 @@ EXIT:
   std::cout << "Difftest Over with " << ret_value << " " << std::endl;
   std::cout << "total steps: " << instr_step << std::endl;
 
-  close(clientfd);
-  close(listenfd);
+  if (uart_server) {
+    close(clientfd);
+    close(listenfd);
+  }
 
   return ret_value;
 }
