@@ -157,6 +157,7 @@ int main(int argc, char **argv) {
       }
 
       auto result = tested.core->step();
+      // std::cout << "tested step" << instr_step << "finished " << std::endl;
 
       if (print) {
         std::cerr << "step_num : " << result.step_num << std::endl;
@@ -174,17 +175,17 @@ int main(int argc, char **argv) {
 
       for (int j = 0; j < result.step_num; j++) {
         golden.core->step();
-
+        // std::cout << "golden step" << instr_step + j << "finished " << std::endl;
         auto last_inst = golden.core->get_state().last_inst;
 
         if (print) {
           std::cerr << disasm->disassemble(last_inst) << std::endl;
         }
 
-        if (last_inst == ebreak) {
-          ret_value = 0;
-          received_term = true;
-        }
+        // if (last_inst == ebreak) {
+        //   ret_value = 0;
+        //   received_term = true;
+        // }
       }
 
       auto uart_out = tested.devices.uart->host_read_byte();
@@ -207,8 +208,7 @@ int main(int argc, char **argv) {
         ret_value = 1;
         received_term = true;
       }
-
-      if (print) {
+      else if (print) {
         test_state.print();
       }
     }

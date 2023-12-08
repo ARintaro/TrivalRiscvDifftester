@@ -1,0 +1,36 @@
+[
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fPIC", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/riscv", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/build", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/fesvr", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/softfloat", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-fvisibility=hidden", "-DNDEBUG", "-o", "build/.objs/spike_main/linux/x86_64/release/spike_core/spike_core.cpp.o", "spike_core/spike_core.cpp"],
+  "file": "spike_core/spike_core.cpp"
+},
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fPIC", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/riscv", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/build", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/fesvr", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/softfloat", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-fvisibility=hidden", "-DNDEBUG", "-o", "build/.objs/spike_main/linux/x86_64/release/spike_core/spike_main.cpp.o", "spike_core/spike_main.cpp"],
+  "file": "spike_core/spike_main.cpp"
+},
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fPIC", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/riscv", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/build", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/fesvr", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/softfloat", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-fvisibility=hidden", "-DNDEBUG", "-o", "build/.objs/spike_main/linux/x86_64/release/spike_core/spike_uart.cpp.o", "spike_core/spike_uart.cpp"],
+  "file": "spike_core/spike_uart.cpp"
+},
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fPIC", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-DNDEBUG", "-o", "build/.objs/elf_reader/linux/x86_64/release/utils/elf_reader.cpp.o", "utils/elf_reader.cpp"],
+  "file": "utils/elf_reader.cpp"
+},
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/riscv", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/build", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/fesvr", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/softfloat", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-DNDEBUG", "-o", "build/.objs/difftester/linux/x86_64/release/difftest/bin.cpp.o", "difftest/bin.cpp"],
+  "file": "difftest/bin.cpp"
+},
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/riscv", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/build", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/fesvr", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/softfloat", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-DNDEBUG", "-o", "build/.objs/difftester/linux/x86_64/release/difftest/dut.cpp.o", "difftest/dut.cpp"],
+  "file": "difftest/dut.cpp"
+},
+{
+  "directory": "/mnt/d/ubuntu-tmp/TrivalRiscvDifftester",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++17", "-Iinterface", "-Iutils", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/riscv", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/build", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/fesvr", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike/softfloat", "-I/mnt/d/ubuntu-tmp/TrivalRiscvDifftester/spike", "-I", "/home/guanning22/.xmake/packages/e/elfio/3.11/465da13342594e2f9a3488a88d3a69f2/include", "-DNDEBUG", "-o", "build/.objs/difftester/linux/x86_64/release/difftest/main.cpp.o", "difftest/main.cpp"],
+  "file": "difftest/main.cpp"
+}]

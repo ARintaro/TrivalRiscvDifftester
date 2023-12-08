@@ -122,6 +122,22 @@ void SpikeCore::sync_extern_state() {
 	extern_state.mcause = state->mcause->read();
 	extern_state.mtval = state->mtval->read();
 	extern_state.mepc = state->mepc->read();
+	extern_state.medeleg = state->medeleg->read();
+	extern_state.mideleg = state->mideleg->read();
+	extern_state.mtvec = state->mtvec->read();
+	extern_state.mscratch = state->csrmap[CSR_MSCRATCH]->read();
+	extern_state.mhartid = state->csrmap[CSR_MHARTID]->read();
+	extern_state.mie = state->csrmap[CSR_MIE]->read();
+	extern_state.mip = state->csrmap[CSR_MIP]->read();
+
+	extern_state.sstatus = state->sstatus->read();
+	extern_state.scause = state->scause->read();
+	extern_state.stval = state->stval->read();
+	extern_state.sepc = state->sepc->read();
+	extern_state.stvec = state->stvec->read();
+	extern_state.sscratch = state->csrmap[CSR_SSCRATCH]->read();
+	extern_state.sie = state->csrmap[CSR_SIE]->read();
+	extern_state.sip = state->csrmap[CSR_SIP]->read();
 
 	extern_state.last_pc = proc->diff_last_pc;
 	extern_state.last_inst = proc->diff_last_insn.bits();
