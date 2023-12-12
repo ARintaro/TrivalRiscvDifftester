@@ -50,14 +50,14 @@ int main(int argc, char **argv) {
 
 
   
-  if (argc != 6) {
+  if (argc != 7) {
     std::cerr << "Usage: " << argv[0]
-              << " <spike_file> <tested_file> <print> <data_file> <uart_server>" << std::endl;
+              << " <spike_file> <tested_file> <print> <base_ram> <ext_ram> <uart_server>" << std::endl;
     return 1;
   }
 
   auto print = std::string(argv[3]) == "true";
-  bool uart_server = std::string(argv[5]) == "true";
+  bool uart_server = std::string(argv[6]) == "true";
 
   std::cout << "Print: " << print << std::endl;
 
@@ -69,10 +69,15 @@ int main(int argc, char **argv) {
     Elf elf(argv[4]);
     golden.write_memory(elf);
     tested.write_memory(elf);
-  } else if (ext == "bin") {
-    BinFile bin(argv[4]);
-    golden.write_memory(config.ram_base, bin);
-    tested.write_memory(config.ram_base, bin);
+  } else if (ext == "bin" || ext == "img") {
+    BinFile base(argv[4]);
+    BinFile ext(argv[5]);
+
+    golden.write_memory(0x80000000, base);
+    tested.write_memory(0x80000000, base);
+
+    golden.write_memory(0x80400000, ext);
+    tested.write_memory(0x80400000, ext);
   } else {
     std::cerr << "Unknown file extension: " << ext << std::endl;
     return 1;
@@ -83,6 +88,7 @@ int main(int argc, char **argv) {
   auto disasm = std::make_unique<disassembler_t>(&isa);
 
   unsigned instr_step = 0;
+  int print_start = 1000000;
 
   int bind_port = 8080;
 
@@ -96,10 +102,12 @@ int main(int argc, char **argv) {
   socklen_t client_addr_len = sizeof(client_addr);
   int clientfd = 0;
 
+  bool failed = false;
+
   if (uart_server) {
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     int opt = 1;
-    // setsockopt(listenfd, SOL_SOCKET , SO_REUSEADDR, &opt, sizeof(opt));
+    setsockopt(listenfd, SOL_SOCKET , SO_REUSEADDR, &opt, sizeof(opt));
     if (listenfd == -1) {
       std::cout << "socket error" << std::endl;
       return 1;
@@ -135,9 +143,14 @@ int main(int argc, char **argv) {
 
   u8 recvBuffer[1024];
 
+  
+
 
   try {
     while (!received_term && (uart_server || instr_step < max_step)) {
+      // print = instr_step > print_start;
+
+      received_term = failed;
 
       if (uart_server) {
         int recvLen =
@@ -168,8 +181,8 @@ int main(int argc, char **argv) {
       if (result.uncertern) {
         // 非确定转移，同步状态
         golden.core->set_state(test_state);
-        // std::cerr<< "uncertern sync state" << result.step_num << std::endl;
-        // test_state.print();
+        std::cerr<< "uncertern sync state" << result.step_num << std::endl;
+        test_state.print();
         continue;
       }
 
@@ -195,6 +208,10 @@ int main(int argc, char **argv) {
 
       instr_step += result.step_num;
 
+      if (instr_step % 10000 <= 5) {
+        printf("%d\n", instr_step);
+      }
+
       const auto &state = golden.core->get_state();
       const auto &state_tested = tested.core->get_state();
 
@@ -206,10 +223,11 @@ int main(int argc, char **argv) {
         state_tested.print();
 
         ret_value = 1;
-        received_term = true;
+        failed = true;
       }
       else if (print) {
         test_state.print();
+        
       }
     }
 

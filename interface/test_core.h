@@ -49,6 +49,7 @@ struct RiscvCoreState {
 		
 		// print csrs, 3 in a line
 		fprintf(stderr, "CSR REGISTERS :\n");
+		fprintf(stderr, "cur_prv: %d\n", cur_prv);
 		fprintf(stderr, "mstatus: 0x%08x, mcause: 0x%08x, mtvec: 0x%08x\n", mstatus, mcause, mtvec);
 		fprintf(stderr, "mepc: 0x%08x, mie: 0x%08x, mip: 0x%08x\n", mepc, mie, mip);
 		fprintf(stderr, "mscratch: 0x%08x, mtval: 0x%08x, medeleg: 0x%08x\n", mscratch, mtval, medeleg);
@@ -71,7 +72,7 @@ struct RiscvCoreState {
 		if (mtvec != rhs.mtvec) return true;
 		if (mepc != rhs.mepc) return true;
 		if (mie != rhs.mie) return true;
-		if (mip != rhs.mip) return true;
+		// if (mip != rhs.mip) return true;
 		if (mscratch != rhs.mscratch) return true;
 		// if (mtval != rhs.mtval) return true;
 		if (medeleg != rhs.medeleg) return true;
@@ -86,6 +87,7 @@ struct RiscvCoreState {
 		if (sscratch != rhs.sscratch) return true;
 		// if (stval != rhs.stval) return true;
 		// if (satp != rhs.satp) return true;
+		if (cur_prv != rhs.cur_prv) return true;
 		return false;
 	}
 };

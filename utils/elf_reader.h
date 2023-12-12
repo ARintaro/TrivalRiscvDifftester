@@ -3,7 +3,7 @@
 #include "type_def.h"
 #include <functional>
 #include <memory>
-#include "elfio/elfio.hpp"
+#include <elfio/elfio.hpp>
 
 namespace difftest {
 

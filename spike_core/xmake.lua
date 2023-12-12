@@ -17,7 +17,7 @@ target("spike")
 		os.mkdir("build")
 		os.cd("build")
 		os.vrun("../configure --prefix=$RISCV")
-		os.vrun("make -j$(nproc)")
+		os.vrun("make -j8")
     end)
 
 	add_includedirs(spike_dir .. "riscv", {public = true})

@@ -152,8 +152,25 @@ void SpikeCore::set_state(const RiscvCoreState &other) {
 	state->pc = other.pc;
 	state->prv = other.cur_prv;
 	state->mepc->write(other.mepc);
-	// state->mtvec->write(other.mtvec);
+	
+	state->mstatus->write(other.mstatus);
 	state->mcause->write(other.mcause);
 	state->mtval->write(other.mtval);
-	state->mstatus->write(other.mstatus);
+	state->medeleg->write(other.medeleg);
+	state->mideleg->write(other.mideleg);
+	state->mtvec->write(other.mtvec);
+	state->csrmap[CSR_MEPC]->write(other.mepc);
+	state->csrmap[CSR_MSCRATCH]->write(other.mscratch);
+	state->csrmap[CSR_MHARTID]->write(other.mhartid);
+	state->csrmap[CSR_MIE]->write(other.mie);
+	state->csrmap[CSR_MIP]->write(other.mip);
+
+	state->sstatus->write(other.sstatus);
+	state->scause->write(other.scause);
+	state->stval->write(other.stval);
+	state->sepc->write(other.sepc);
+	state->stvec->write(other.stvec);
+	state->csrmap[CSR_SSCRATCH]->write(other.sscratch);
+	state->csrmap[CSR_SIE]->write(other.sie);
+	state->csrmap[CSR_SIP]->write(other.sip);
 }

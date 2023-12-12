@@ -7,6 +7,8 @@ set_languages("c++17")
 add_includedirs("interface")
 add_includedirs("utils")
 
+add_packages("elfio")
+
 add_requires("elfio")
 
 -- if is_mode("debug") then 
