@@ -138,6 +138,7 @@ void SpikeCore::sync_extern_state() {
 	extern_state.sscratch = state->csrmap[CSR_SSCRATCH]->read();
 	extern_state.sie = state->csrmap[CSR_SIE]->read();
 	extern_state.sip = state->csrmap[CSR_SIP]->read();
+	extern_state.satp = state->satp->read();
 
 	extern_state.last_pc = proc->diff_last_pc;
 	extern_state.last_inst = proc->diff_last_insn.bits();
@@ -164,12 +165,14 @@ void SpikeCore::set_state(const RiscvCoreState &other) {
 	state->csrmap[CSR_MHARTID]->write(other.mhartid);
 	state->csrmap[CSR_MIE]->write(other.mie);
 	state->csrmap[CSR_MIP]->write(other.mip);
+	
 
 	state->sstatus->write(other.sstatus);
 	state->scause->write(other.scause);
 	state->stval->write(other.stval);
 	state->sepc->write(other.sepc);
 	state->stvec->write(other.stvec);
+	state->satp->write(other.satp);
 	state->csrmap[CSR_SSCRATCH]->write(other.sscratch);
 	state->csrmap[CSR_SIE]->write(other.sie);
 	state->csrmap[CSR_SIP]->write(other.sip);
